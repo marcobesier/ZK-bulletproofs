@@ -82,3 +82,33 @@ This manipulation allows the committer to open $C_3$ to $v^\prime$, $w^\prime$, 
 If we used the same $G₁…Gₙ$ for both vectors before adding them, the commitment would no longer be binding.
 By using different sets of points for each vector, i.e., $G₁…Gₙ$ for the first and $H₁…Hₙ$ for the second, any redistribution of values between $v_i$ and $w_i$ affects different points $G_i$ and $H_i$, changing the combined commitment $C_3$.
 Therefore, the committer cannot manipulate the openings without detection because the points are distinct, and their discrete logs are unknown.
+
+# Exercise 2
+
+What happens if the committer tries to switch the same elements inside the vector?
+
+For example, they commit
+
+$$
+C_1 = v_1G_1+v_2G_2+\dots+v_nG_n+rB
+$$
+
+but open with the first two elements swapped:
+
+$$
+[v_2,v_1,v_3,\dots,v_n]
+$$
+
+Assume that the vector $G_1,\dots,G_n$ is unpermuted.
+
+### Answer
+
+If the committer tries to open the commitment using the swapped vector, the claimed commitment would be:
+
+$$
+C_1^\prime=v_2G_1+v_1G_2+v_3G_3+\dots+v_nG_n+rB
+$$
+
+In the verification process, the verifier computes this commitment using the provided values and compares it with the original commitment $C_1$.
+However, since $G_1\neq G_2$ and $v_1\neq v_2$, the verifier concludes $C_1^\prime\neq C_1$.
+Therefore, the committer cannot successfully open the commitment using the swapped vector.
