@@ -112,3 +112,50 @@ $$
 In the verification process, the verifier computes this commitment using the provided values and compares it with the original commitment $C_1$.
 However, since $G_1\neq G_2$ and $v_1\neq v_2$, the verifier concludes $C_1^\prime\neq C_1$.
 Therefore, the committer cannot successfully open the commitment using the swapped vector.
+
+# Exercise 3
+
+Suppose we commit a vector of values to the points $G_1$ and $G_2$.
+The discrete logarithm for $G_1$ is known, but the discrete logarithm for $G_2$ is not known. 
+We will ignore the blinding term for now.
+Can the committer open to two different vectors?
+Why or why not?
+
+### Answer
+
+Let $C = v_1G_1 + v_2G_2$ be a commitment.
+Furthermore, let $G_1 = g_1G$ and $G_2 = g_2G$, where $G$, $G_1$, and $G_2$ are elliptic curve points and $g_1$ and $g_2$ are the discrete logarithms of $G_1$ and $G_2$, respectively.
+We assume that the committer knows $g_1$ but does not know $g_2$.
+
+Suppose the committer wants to find different values $v_1^\prime$ and $v_2^\prime$ such that $C = v_1^\prime G_1 + v_2^\prime G_2$.
+As a first step, the committer might express $G_1$ in terms of $G$ such that:
+
+$$
+C = v_1g_1G + v_2G_2
+$$
+
+Then, the committer could set up the equality for the alternative opening
+
+$$
+C = v_1^\prime g_1G + v_2^\prime G_2
+$$
+
+subtract the original commitment from the forged commitment
+
+$$
+0 = (v_1^\prime - v_1) g_1 G + (v_2^\prime - v_2) G_2
+$$
+
+and rearrange this equation as:
+
+$$
+(v_1^\prime - v_1) g_1 G = - (v_2^\prime - v_2) G_2
+$$
+
+Recall that the committer knows $g_1$ and can, therefore, compute the left-hand side of the above equation.
+However, since they do not know the discrete logarithm of $G_2$, they cannot compute $-(v_2^\prime - v_2)G_2$ in terms of $G$.
+In other words, they cannot find $v_2^\prime$ that satisfies the equation without knowing $g_2$.
+
+As a conclusion, the committer cannot find alternative $v_1^\prime$, $v_2^\prime$ to open $C$ differently because the unknown discrete logarithm of $G_2$ prevents them from adjusting $v_2$ accordingly.
+Any attempt to change $v_1$ would require a corresponding change in $v_2$, which is not feasible without knowledge of $g_2$.
+Therefore, the committer is bound to the original vector $(v_1, v_2)$.
